@@ -123,7 +123,7 @@ const Vue3NativeNotification = {
 }
 
 export function useNativeNotifications () {
-  return inject('vue3NativeNotification')
+  return inject('vue3NativeNotifications')
 }
 
 // Export plugin
