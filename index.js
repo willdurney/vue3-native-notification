@@ -1,23 +1,23 @@
 import { inject } from 'vue'
 // Notification object
-var Notification = window.Notification || window.webkitNotification
+const Notification = window.Notification || window.webkitNotification
 
-const onerror = function onerror(event) {
+const onerror = function onerror (event) {
   // console.log('On error event was called')
 }
 
-const onclick = function onclick(event) {
+const onclick = function onclick (event) {
   // console.log('On click event was called')
   event.preventDefault()
   window.focus()
   event.target.close()
 }
 
-const onclose = function onclose(event) {
+const onclose = function onclose (event) {
   // console.log('On close event was called')
 }
 
-const onshow = function onshow(event) {
+const onshow = function onshow (event) {
   // console.log('On show event was called')
 }
 
@@ -25,7 +25,7 @@ const defaultEvents = {
   onerror: onerror,
   onclick: onclick,
   onclose: onclose,
-  onshow: onshow,
+  onshow: onshow
 }
 
 // Plugin
@@ -38,14 +38,14 @@ const Vue3NativeNotification = {
     app.config.globalProperties.$notification = {}
 
     // Manual permission request
-    var requestPermission = function () {
+    const requestPermission = function () {
       return Notification.requestPermission()
     }
     app.notification.requestPermission = requestPermission
     app.config.globalProperties.$notification.requestPermission = requestPermission
 
     // Show function
-    var show = function (title, opts, e) {
+    const show = function (title, opts, e) {
       if (!e.onerror) e.onerror = function () {}
       if (!e.onclick) e.onclick = function () {}
       if (!e.onclose) e.onclose = function () {}
@@ -119,10 +119,10 @@ const Vue3NativeNotification = {
     app.config.globalProperties.$notification.show = show
 
     app.provide('vue3NativeNotifications', app.config.globalProperties.$notification)
-  },
+  }
 }
 
-export function useNativeNotifications() {
+export function useNativeNotifications () {
   return inject('vue3NativeNotification')
 }
 

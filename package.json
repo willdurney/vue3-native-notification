@@ -1,9 +1,9 @@
 {
-  "name": "vue-native-notification",
-  "version": "1.1.1",
-  "description": "Vue.js plugin for native notifications",
+  "name": "vue3-native-notification",
+  "version": "0.1.0",
+  "description": "Vue.js 3 plugin for native notifications",
   "main": "index.js",
-  "repository": "https://github.com/dennisbruner/vue-native-notification.git",
+  "repository": "https://github.com/dithmer/vue3-native-notification.git",
   "author": "Dennis Bruner <contact@dennisbruner.de>",
   "license": "MIT",
   "keywords": [
@@ -16,14 +16,6 @@
     "api"
   ],
   "scripts": {
-    "build": "browserify index.js -t babelify | uglifyjs -m > vue-native-notification.min.js",
     "test": "standard"
-  },
-  "devDependencies": {
-    "babel-preset-env": "^1.6.0",
-    "babelify": "^7.3.0",
-    "browserify": "^14.5.0",
-    "standard": "*",
-    "uglify-js": "^3.0.28"
   }
 }
