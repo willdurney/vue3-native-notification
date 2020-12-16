@@ -1,11 +1,11 @@
 # vue-native-notification
 
-Vue.js plugin for native notifications
+Vue.js 3 plugin for native notifications with composition API hook.
 
 ## Install
 
 ```
-npm install --save vue-native-notification
+npm install --save vue3-native-notification
 ```
 
 ## Usage
@@ -13,13 +13,15 @@ npm install --save vue-native-notification
 ### Add plugin
 
 ```javascript
-import Vue from 'vue'
-import VueNativeNotification from 'vue-native-notification'
+import { createApp } from 'vue'
+import Vue3NativeNotification from 'vue3-native-notification'
 
-Vue.use(VueNativeNotification, {
+const app = createApp()
+
+app.use(VueNativeNotification, {
   // Automatic permission request before
   // showing notification (default: true)
-  requestOnNotify: true
+  requestOnNotify: true,
 })
 ```
 
@@ -31,20 +33,25 @@ Vue.use(VueNativeNotification, {
 </template>
 
 <script>
-export default {
-  methods: {
-    notify () {
-      // https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification#Parameters
-      this.$notification.show('Hello World', {
-        body: 'This is an example!'
-      }, {})
-    }
-  }
-}
+  export default defineComponent({
+    name: 'SimpleComponent',
+    setup() {
+      const nativeNotification = useNativeNotification()
+
+      const notify = function () {
+        nativeNotification.show(
+          'Notification',
+          {
+            body: 'This is a simple notification',
+          },
+          {},
+        )
+      }
+    },
+  })
 </script>
 
-<style>
-</style>
+<style></style>
 ```
 
 ### Manual permission request
@@ -53,12 +60,17 @@ You can manually request users permission with:
 
 ```javascript
 // Global
-Vue.notification.requestPermission()
-  .then(console.log) // Prints "granted", "denied" or "default"
+app.notification.requestPermission().then(console.log) // Prints "granted", "denied" or "default"
 
 // Component
-this.$notification.requestPermission()
-  .then(console.log)
+//...
+setup() {
+  const nativeNotification = useNativeNotification()
+
+  //...
+  nativeNotification.requestsPermission().then(console.log)
+},
+//...
 ```
 
 ### Events
@@ -97,24 +109,28 @@ Is an empty function. Nothing will be executed
 const notification = {
   title: 'Your title',
   options: {
-    body: 'This is an example!'
+    body: 'This is an example!',
   },
   events: {
     onerror: function () {
-        console.log('Custom error event was called');
+      console.log('Custom error event was called')
     },
     onclick: function () {
-        console.log('Custom click event was called');
+      console.log('Custom click event was called')
     },
     onclose: function () {
-        console.log('Custom close event was called');
+      console.log('Custom close event was called')
     },
     onshow: function () {
-        console.log('Custom show event was called');
-    }
-  }
+      console.log('Custom show event was called')
+    },
+  },
 }
-this.$notification.show(notification.title, notification.options, notification.events)
+this.$notification.show(
+  notification.title,
+  notification.options,
+  notification.events,
+)
 ```
 
 ## License

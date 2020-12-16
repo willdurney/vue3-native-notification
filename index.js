@@ -1,22 +1,23 @@
+import { inject } from 'vue'
 // Notification object
 var Notification = window.Notification || window.webkitNotification
 
-const onerror = function onerror (event) {
+const onerror = function onerror(event) {
   // console.log('On error event was called')
 }
 
-const onclick = function onclick (event) {
+const onclick = function onclick(event) {
   // console.log('On click event was called')
   event.preventDefault()
   window.focus()
   event.target.close()
 }
 
-const onclose = function onclose (event) {
+const onclose = function onclose(event) {
   // console.log('On close event was called')
 }
 
-const onshow = function onshow (event) {
+const onshow = function onshow(event) {
   // console.log('On show event was called')
 }
 
@@ -24,34 +25,37 @@ const defaultEvents = {
   onerror: onerror,
   onclick: onclick,
   onclose: onclose,
-  onshow: onshow
+  onshow: onshow,
 }
 
 // Plugin
-const VueNativeNotification = {
-  install: function (Vue, options) {
+const Vue3NativeNotification = {
+  install: function (app, options) {
     options = options || {}
     options.requestOnNotify = options.requestOnNotify || true
 
-    Vue.notification = {}
-    Vue.prototype.$notification = {}
+    app.notification = {}
+    app.config.globalProperties.$notification = {}
 
     // Manual permission request
     var requestPermission = function () {
       return Notification.requestPermission()
     }
-    Vue.notification.requestPermission = requestPermission
-    Vue.prototype.$notification.requestPermission = requestPermission
+    app.notification.requestPermission = requestPermission
+    app.config.globalProperties.$notification.requestPermission = requestPermission
 
     // Show function
     var show = function (title, opts, e) {
-      if (!e.onerror) e.onerror = function () { }
-      if (!e.onclick) e.onclick = function () { }
-      if (!e.onclose) e.onclose = function () { }
-      if (!e.onshow) e.onshow = function () { }
+      if (!e.onerror) e.onerror = function () {}
+      if (!e.onclick) e.onclick = function () {}
+      if (!e.onclose) e.onclose = function () {}
+      if (!e.onshow) e.onshow = function () {}
       return Promise.resolve()
         .then(function () {
-          if (options.requestOnNotify && Notification.permission !== 'granted') {
+          if (
+            options.requestOnNotify &&
+            Notification.permission !== 'granted'
+          ) {
             return requestPermission()
           }
 
@@ -103,22 +107,24 @@ const VueNativeNotification = {
               return e
             }
 
-            return navigator.serviceWorker.ready.then(
-              function (reg) {
+            return navigator.serviceWorker.ready
+              .then(function (reg) {
                 reg.showNotification(title, opts)
-              }).then(bindOnShow, bindOnError)
+              })
+              .then(bindOnShow, bindOnError)
           }
         })
     }
-    Vue.notification.show = show
-    Vue.prototype.$notification.show = show
-  }
+    app.notification.show = show
+    app.config.globalProperties.$notification.show = show
+
+    app.provide('vue3NativeNotifications', app.config.globalProperties.$notification)
+  },
 }
 
-// Automatic installation
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(VueNativeNotification)
+export function useNativeNotifications() {
+  return inject('vue3NativeNotification')
 }
 
 // Export plugin
-export default VueNativeNotification
+export default Vue3NativeNotification
