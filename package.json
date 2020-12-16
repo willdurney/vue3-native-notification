@@ -1,5 +1,5 @@
 {
-  "name": "@dithtim/vue3-native-notification",
+  "name": "vue3-native-notification",
   "version": "0.1.1",
   "description": "Vue.js 3 plugin for native notifications",
   "main": "index.js",
