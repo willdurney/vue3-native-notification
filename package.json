@@ -1,10 +1,10 @@
 {
-  "name": "vue3-native-notification",
+  "name": "@dithtim/vue3-native-notification",
   "version": "0.1.1",
   "description": "Vue.js 3 plugin for native notifications",
   "main": "index.js",
   "repository": "https://github.com/dithmer/vue3-native-notification.git",
-  "author": "Dennis Bruner <contact@dennisbruner.de>",
+  "author": "Tim Dithmer<dith.tim@gmail.com>",
   "license": "MIT",
   "keywords": [
     "vue",
