@@ -33,10 +33,12 @@ app.use(VueNativeNotification, {
 </template>
 
 <script>
+  import { useNativeNotifications } from "vue3-native-notification"
+
   export default defineComponent({
     name: 'SimpleComponent',
     setup() {
-      const nativeNotification = useNativeNotification()
+      const nativeNotification = useNativeNotifications()
 
       const notify = function () {
         nativeNotification.show(
@@ -54,6 +56,8 @@ app.use(VueNativeNotification, {
 <style></style>
 ```
 
+Available options: https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification
+
 ### Manual permission request
 
 You can manually request users permission with:
@@ -64,11 +68,13 @@ app.notification.requestPermission().then(console.log) // Prints "granted", "den
 
 // Component
 //...
+import { useNativeNotifications } from "vue3-native-notification"
+//...
 setup() {
-  const nativeNotification = useNativeNotification()
+  const nativeNotification = useNativeNotifications()
 
   //...
-  nativeNotification.requestsPermission().then(console.log)
+  nativeNotification.requestPermission().then(console.log)
 },
 //...
 ```
@@ -126,7 +132,7 @@ const notification = {
     },
   },
 }
-this.$notification.show(
+app.notification.show(
   notification.title,
   notification.options,
   notification.events,
